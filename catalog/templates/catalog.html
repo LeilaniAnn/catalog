@@ -1,0 +1,34 @@
+{% for x in categories%}
+<ul>
+<li>{{x.name}}
+<br>
+<a href="{{url_for('editCategories',category_id=x.id)}}">edit</a>
+<a href="{{url_for('deleteCategories',category_id=x.id)}}">del</a>
+<a href="{{url_for('newItem', category_id=x.id)}}">New Item</a>
+</li>
+</ul>
+
+{% endfor %}
+<a href="{{url_for('newCategories')}}">New Category</a>
+<div class = 'flash'>
+		      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+          
+        <ul>
+        {% for message in messages %}
+            <li> <strong> {{ message }} </strong> </li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+
+</div>
+{% for i in items %}
+<ul>
+<li>{{i.category.name}} :{{i.name}} 
+<br><img src="{{i.image}}" height="200" width="200">
+<a href="#">Edit</a> | <a href="#">Delete</a>
+</li>
+
+</ul>
+{% endfor %}
