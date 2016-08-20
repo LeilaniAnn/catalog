@@ -1,20 +1,21 @@
-{% for x in categories%}
-<ul>
-<li>{{x.name}}
-<br>
-<a href="{{url_for('editCategories',category_id=x.id)}}">edit</a>
-<a href="{{url_for('deleteCategories',category_id=x.id)}}">del</a>
-<a href="{{url_for('newItem', category_id=x.id)}}">New Item</a>
-</li>
-</ul>
-
-{% endfor %}
-<a href="{{url_for('newCategories')}}">New Category</a>
-<div class = 'flash'>
-		      {% with messages = get_flashed_messages() %}
+ {% include "header.html" %}
+<!-- Carousel
+    ================================================== -->
+<!-- /.carousel -->
+<!-- Marketing messaging and featurettes
+    ================================================== -->
+<!-- Wrap the rest of the page in another container to center all the content. -->
+<div class="container" id="items">
+    <div class="row">
+        <h1 class="text-center">All Items</h1>
+        <h5 class="text-center"><a href="{{url_for('newCategories')}}">New Category</a>
+</h5>
+    </div>
+<div class = 'flash bg-success'>
+              {% with messages = get_flashed_messages() %}
       {% if messages %}
           
-        <ul>
+        <ul class="list-unstyled">
         {% for message in messages %}
             <li> <strong> {{ message }} </strong> </li>
         {% endfor %}
@@ -23,12 +24,43 @@
     {% endwith %}
 
 </div>
-{% for i in items %}
-<ul>
-<li>{{i.category.name}} :{{i.name}} 
-<br><img src="{{i.image}}" height="200" width="200">
-<a href="#">Edit</a> | <a href="#">Delete</a>
-</li>
+    <div class="row">
+        {% for i in items%}
 
-</ul>
-{% endfor %}
+        <div class="single-item col-md-3 col-sm-4">
+        <h4 class="text-center" style="color:#EC1F88;">{{i.category.name}}</h4>
+            <h4 class="text-center">{{i.name}}</h4>
+            <hr>
+
+            <img src="{{i.image}}" width="200" class="img-fluid text-center center-block" /><br><br>
+            <p class="item-info">
+
+                <ul class="text-center item-info list-unstyled">
+
+                    <li><b>Description:</b> {{i.description}}</li>
+                    <li><b>Price: </b> {{i.price}}</li>
+                    <li><a href="{{url_for('itemPage',item_id=i.id, category_id=i.category_id)}}">More Info</a> </li>
+                    <li><a href="{{url_for('editItem',category_id=i.category.id,item_id=i.id)}}">Edit</a> | <a href="{{url_for('deleteItem',category_id=i.category.id,item_id=i.id)}}">Delete</a></li>
+                </ul>
+            </p>
+        </div>
+        {% endfor%}
+    </div>
+
+</div>
+
+
+    <div class="container">
+
+        <div class="footer navbar-inner navbar-content-center" id="contact">
+<hr class="style-rainbow">
+        
+            <ul class="list-inline text-center list-unstyled">
+            <li><a href="http://twitter.com/leilanirar"><i class="fa fa-twitter-square fa-3x" aria-hidden="true"></i></a></li>
+            <li><a href="http://github.com/leilaniann"><i class="fa fa-github-square fa-3x" aria-hidden="true"></i></a></li>
+            <li><a href="http://linkedin.com/in/leilanir"><i class="fa fa-linkedin-square fa-3x" aria-hidden="true"></i></a></li>
+            </ul>
+            </div>
+        </div>
+    </nav>
+{% include "footer.html" %}

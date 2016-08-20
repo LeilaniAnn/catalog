@@ -1,0 +1,37 @@
+    {% include "header.html" %}
+
+    <div class="row">
+        <h1 class="text-center">All {{category.name}} Items</h1>
+    </div>
+    <div class="row text-center">
+        <a href="{{url_for('editCategories',category_id=category.id)}}">edit category name</a>&nbsp;    &nbsp;   |&nbsp;    &nbsp;  
+        <a href="{{url_for('deleteCategories',category_id=category.id)}}">delete category name</a>
+        &nbsp;  &nbsp;  | &nbsp;    &nbsp;  <a href="{{url_for('newItem', category_id=category.id)}}">New {{category.name}} Item</a>
+    </div>
+{% for i in item %}
+
+    <div class="row">
+
+        <div class="single-item col-md-3 col-sm-3">
+        <h4 class="text-center" style="color:#EC1F88;">
+          {{i.name}}</h4>
+            <hr>
+            <img src="{{i.image}}" width="200" class="img-responsive text-center center-block" />
+            <hr>
+            <p>
+                <ul class="text-center list-unstyled">
+                    <li><b>Description:</b> {{i.description}}</li>
+
+                    <li><b>Price: </b> {{i.price}}</li>
+
+                    <li><a href="{{url_for('itemPage',item_id=i.id, category_id=i.category_id)}}">More Info</a> </li>
+
+                    <li><a href="{{url_for('editItem',category_id=i.category.id,item_id=i.id)}}">Edit</a> | 
+
+                    <a href="{{url_for('deleteItem', item_id=item.id, category_id=category.id)}}">Delete</a></li>
+                </ul>
+            </p>
+        </div>
+        {% endfor%}
+    </div>
+    {% include "footer.html" %}
