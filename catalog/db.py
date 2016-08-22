@@ -54,7 +54,7 @@ class Item(Base):
 
 
 
-engine = create_engine('postgres://tkgjogfuejyojt:sogIEaSGEyT9c-xLO2Yxs53Tqh@ec2-184-73-222-90.compute-1.amazonaws.com:5432/dbeilf1mh302cr')
+engine = create_engine('sqlite:///catalog.db')
  
 
 Base.metadata.create_all(engine)

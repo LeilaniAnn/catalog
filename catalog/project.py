@@ -17,7 +17,7 @@ import requests
 app = Flask(__name__)
 
 # Connect to Database and create database session
-engine = create_engine('postgres://tkgjogfuejyojt:sogIEaSGEyT9c-xLO2Yxs53Tqh@ec2-184-73-222-90.compute-1.amazonaws.com:5432/dbeilf1mh302cr')
+engine = create_engine('sqlite:///catalog.db')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
@@ -322,7 +322,7 @@ def getUserID(email):
         return None
 
 
-# if __name__ == '__main__':
-app.secret_key = 'super_secret_key'
-app.debug = True
-    # app.run(host='0.0.0.0', port=5000)
+if __name__ == '__main__':
+    app.secret_key = 'super_secret_key'
+    app.debug = True
+    app.run(host='0.0.0.0', port=5000)
