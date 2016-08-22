@@ -1,4 +1,6 @@
-# [Item Catalog]
+# [Item Catalog](http://leilanixann.pythonanywhere.com/)
+version deployed does not require user login
+
 This is a project for Udacity's Full Stack Nanodegree: Item Catalog Project 
 
 ## Features
