@@ -18,6 +18,7 @@ class Category(Base):
    
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
+    Items = relationship("Item", cascade = "all, delete-orphan")
 
     @property
     def serialize(self):
@@ -53,7 +54,7 @@ class Item(Base):
 
 
 
-engine = create_engine('sqlite:///catalog.db')
+engine = create_engine('postgres://tkgjogfuejyojt:sogIEaSGEyT9c-xLO2Yxs53Tqh@ec2-184-73-222-90.compute-1.amazonaws.com:5432/dbeilf1mh302cr')
  
 
 Base.metadata.create_all(engine)

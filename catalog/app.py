@@ -17,25 +17,11 @@ import requests
 app = Flask(__name__)
 
 # Connect to Database and create database session
-engine = create_engine('sqlite:///catalog.db')
+engine = create_engine('postgres://tkgjogfuejyojt:sogIEaSGEyT9c-xLO2Yxs53Tqh@ec2-184-73-222-90.compute-1.amazonaws.com:5432/dbeilf1mh302cr')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
-pleaseLogin='''
-
-<script>function deletePost() {
-    var ask = window.confirm("You must be logged in to do that!");
-    if (ask) {
-        window.alert("Log in?");
-
-        document.location.href = "http://localhost:5000/login";
-
-    }
-}
-</script>
-<body onload='deletePost()'>
-'''
 
 # Show all categories
 @app.route('/')
@@ -55,7 +41,7 @@ def showCategories():
 def newCategories():
     categories = session.query(Category).order_by(asc(Category.name))
     if 'username' not in login_session:
-        return pleaseLogin
+        return redirect(url_for('showLogin'))
     else:
         if request.method == 'POST':
             newCategory = Category(name=request.form['name'])
@@ -336,7 +322,7 @@ def getUserID(email):
         return None
 
 
-if __name__ == '__main__':
-    app.secret_key = 'super_secret_key'
-    app.debug = True
-    app.run(host='0.0.0.0', port=5000)
+# if __name__ == '__main__':
+app.secret_key = 'super_secret_key'
+app.debug = True
+    # app.run(host='0.0.0.0', port=5000)
