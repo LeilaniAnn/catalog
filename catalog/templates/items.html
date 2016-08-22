@@ -8,8 +8,7 @@
         <a href="{{url_for('deleteCategories',category_id=category.id)}}">delete category name</a>
         &nbsp;  &nbsp;  | &nbsp;    &nbsp;  <a href="{{url_for('newItem', category_id=category.id)}}">New {{category.name}} Item</a>
     </div>
-{% for i in item %}
-
+{% for i in items %}
     <div class="row">
 
         <div class="single-item col-md-3 col-sm-3">
@@ -28,7 +27,7 @@
 
                     <li><a href="{{url_for('editItem',category_id=i.category.id,item_id=i.id)}}">Edit</a> | 
 
-                    <a href="{{url_for('deleteItem', item_id=item.id, category_id=category.id)}}">Delete</a></li>
+                    <a href="{{url_for('deleteItem', item_id=i.id, category_id=i.id)}}">Delete</a></li>
                 </ul>
             </p>
         </div>
