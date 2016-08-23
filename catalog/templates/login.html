@@ -4,15 +4,16 @@
 <head>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
     </script>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-<style type="text/css">
-    #result{
-        margin-top:75px;
+    <link href="{{url_for('static', filename='bootstrap.min.css')}}" rel="stylesheet">
+    <style type="text/css">
+    #result {
+        margin-top: 75px;
     }
-    .facebook-button{
-        margin-top:50px;
+    
+    .facebook-button {
+        margin-top: 50px;
     }
-</style>
+    </style>
 </head>
 
 <body>
@@ -67,17 +68,15 @@
         });
     }
     </script>
-    <div class="container-fluid">
-    <div class="row text-center">
-    <button class="facebook-button">
-        <fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();" data-size="xlarge">
-            <a href='javascript:sendTokenToServer()'>Login with Facebook</a>
-        </fb:login-button>
-    </button>
-    <br><br><br>
-    <div id="result"></div>
-
-    </div>
+    <div class="container-fluid text-center">
+        <button class="facebook-button">
+            <fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();" data-size="xlarge">
+                <a href='javascript:sendTokenToServer()'>Login with Facebook</a>
+            </fb:login-button>
+        </button>
+        <br>
+        <br>
+        <div id="result"></div>
     </div>
     <!--END FACEBOOK SIGN IN -->
 </body>

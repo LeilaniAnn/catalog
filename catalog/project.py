@@ -5,15 +5,14 @@ from db import Base, Category, Item, User
 from flask import session as login_session
 import random
 import string
-# stores oauth2 params
-from oauth2client.client import AccessTokenCredentials
 
-from oauth2client.client import flow_from_clientsecrets
-from oauth2client.client import FlowExchangeError
 import httplib2
 import json
 from flask import make_response
 import requests
+# Import wraps so you don't need to update __name__ & __module__
+from functools import wraps
+
 app = Flask(__name__)
 
 # Connect to Database and create database session
@@ -22,6 +21,14 @@ Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' not in login_session:
+          return redirect(url_for( 'showLogin' ) )
+        return f(*args, **kwargs)
+    return decorated_function
 
 # Show all categories
 @app.route('/')
@@ -38,53 +45,55 @@ def showCategories():
 
 # Category CRUD operations
 @app.route('/catalog/new', methods=['POST','GET'])
+@login_required
 def newCategories():
     categories = session.query(Category).order_by(asc(Category.name))
-    if 'username' not in login_session:
-        return redirect(url_for('showLogin'))
+    if request.method == 'POST':
+        newCategory = Category(name=request.form['name'])
+        session.add(newCategory)
+        flash('New Category \"%s\" Successfuly Created' % newCategory.name)
+        session.commit()
+        return redirect(url_for('showCategories'))
     else:
-        if request.method == 'POST':
-            newCategory = Category(name=request.form['name'])
-            session.add(newCategory)
-            flash('New Category \"%s\" Successfuly Created' % newCategory.name)
-            session.commit()
-            return redirect(url_for('showCategories'))
-        else:
-            return render_template('newCategory.html')
+        return render_template('newCategory.html',categories=categories)
 
 @app.route('/catalog/<int:category_id>/edit/', methods=['GET', 'POST'])
+@login_required
 def editCategories(category_id):
     categories = session.query(Category).order_by(asc(Category.name))
     editCategories = session.query(Category).filter_by(id=category_id).one()
-    if 'username' not in login_session:
-        return redirect(url_for('showLogin'))
+    if editCategories != login_session['user_id']:
+        flash(u'You are not authorized to edit this category', 'error')
+        return redirect(url_for('showCategories'))
+    if request.method == 'POST':
+        if request.form['name']:
+            editCategories.name = request.form['name']
+            session.add(editCategories)
+            session.commit()
+            flash('Category Successfully Edited \"%s\"' % editCategories.name)
+            return redirect(url_for('showCategories'))
     else:
-        if request.method == 'POST':
-            if request.form['name']:
-                editCategories.name = request.form['name']
-                flash('Category Successfully Edited \"%s\"' % editCategories.name)
-                return redirect(url_for('showCategories'))
-        else:
-            return render_template('editCategory.html', 
-                                    categories=categories, 
-                                    category=editCategories)
+        return render_template('editCategory.html', 
+                                categories=categories, 
+                                category=editCategories)
 
 @app.route('/catalog/<int:category_id>/delete/', methods=['GET', 'POST'])
+@login_required
 def deleteCategories(category_id):
     categories = session.query(Category).order_by(asc(Category.name))
     deleteCategory = session.query(Category).filter_by(id=category_id).one()
-    if 'username' not in login_session:
-        return redirect(url_for('showLogin'))
+    if deleteCategories != login_session['user_id']:
+        flash(u'You are not authorized to delete this category', 'error')
+        return redirect(url_for('showCategories'))
+    if request.method == 'POST':
+        session.delete(deleteCategory)
+        flash('\"%s\" Successfully Deleted' % deleteCategory.name)
+        session.commit()
+        return redirect(url_for('showCategories', category_id=category_id))
     else:
-        if request.method == 'POST':
-            session.delete(deleteCategory)
-            flash('\"%s\" Successfully Deleted' % deleteCategory.name)
-            session.commit()
-            return redirect(url_for('showCategories', category_id=category_id))
-        else:
-            return render_template('deleteCategory.html', 
-                                    category=deleteCategory,
-                                    categories=categories)
+        return render_template('deleteCategory.html', 
+                                category=deleteCategory,
+                                categories=categories)
 
 @app.route('/catalog/<int:category_id>/')
 def showItems(category_id):
@@ -107,67 +116,69 @@ def itemPage(category_id,item_id):
                             item_id=item_id,
                             categories=categories)
 @app.route('/catalog/<int:category_id>/new', methods=['POST','GET'])
+@login_required
 def newItem(category_id):
-    category = session.query(Category).filter_by(id=category_id).one()
-    if 'username' not in login_session:
-        return redirect(url_for('showLogin'))
-    else:    
-        if request.method == 'POST':
-            newItem = Item(name=request.form['name'],
-                           description=request.form['description'],
-                           price = request.form['price'],
-                           image=request.form['image'],
-                           category_id=category_id)
-            session.add(newItem)
-            flash('New item \"%s\" successfuly added' % newItem.name)
-            session.commit()
-            return redirect(url_for('showCategories', category_id=category_id))
-        else:
-            return render_template('newItem.html', category_id=category_id)
+    category = session.query(Category).filter_by(id=category_id).one()    
+    if request.method == 'POST':
+        newItem = Item(name=request.form['name'],
+                       description=request.form['description'],
+                       price = request.form['price'],
+                       image=request.form['image'],
+                       category_id=category_id)
+        session.add(newItem)
+        flash('New item \"%s\" successfuly added' % newItem.name)
+        session.commit()
+        return redirect(url_for('showCategories', category_id=category_id))
+    else:
+        return render_template('newItem.html', 
+                                category_id=category_id,
+                                category=category)
 
 @app.route('/catalog/<int:category_id>/items/<int:item_id>/edit', methods=['POST','GET'])
+@login_required
 def editItem(category_id,item_id):
     categories = session.query(Category).order_by(asc(Category.name))
     category = session.query(Category).filter_by(id=category_id).one()
     editItem = session.query(Item).filter_by(id=item_id).one()
-    if 'username' not in login_session:
-        return redirect(url_for('showLogin'))
+    if editItem != login_session['user_id']:
+        flash(u'You are not authorized to edit this item', 'error')
+        return redirect(url_for('showCategories'))
+    if request.method == 'POST':
+        if request.form['name']:
+            editItem.name = request.form['name']
+        if request.form['description']:
+            editItem.description = request.form['description']
+        if request.form['price']:
+            editItem.price = request.form['price']
+        if request.form['image']:
+            editItem.image = request.form['image']
+        session.add(editItem)
+        flash('\"%s\" Item Successfully Edited' %editItem.name)
+        session.commit()
+        return redirect(url_for('showCategories', item_id=item_id))
     else:
-        if request.method == 'POST':
-            if request.form['name']:
-                editItem.name = request.form['name']
-            if request.form['description']:
-                editItem.description = request.form['description']
-            if request.form['price']:
-                editItem.price = request.form['price']
-            if request.form['image']:
-                editItem.image = request.form['image']
-            session.add(editItem)
-            session.commit()
-            flash('\"%s\" Item Successfully Edited' %editItem.name)
-            return redirect(url_for('showCategories', item_id=item_id))
-        else:
-            return render_template('editItem.html',
-                                    category_id=category_id, 
-                                    item_id=item_id, 
-                                    item=editItem, 
-                                    categories=categories)
+        return render_template('editItem.html',
+                                category_id=category_id, 
+                                item_id=item_id, 
+                                item=editItem, 
+                                categories=categories)
 
 @app.route('/catalog/<int:category_id>/items/<int:item_id>/delete', methods=['POST','GET'])
+@login_required
 def deleteItem(category_id,item_id):
     deleteItem = session.query(Item).filter_by(id=item_id).one()
-    if 'username' not in login_session:
-        return redirect(url_for('showLogin'))
+    if deleteItem != login_session['user_id']:
+        flash(u'You are not authorized to delete this item', 'error')
+        return redirect(url_for('showCategories'))
+    if request.method == 'POST':
+        session.delete(deleteItem)
+        flash('\"%s\" Successfully Deleted' % deleteItem.name)
+        session.commit()
+        return redirect(url_for('showCategories', category_id=category_id))
     else:
-        if request.method == 'POST':
-            session.delete(deleteItem)
-            flash('\"%s\" Successfully Deleted' % deleteItem.name)
-            session.commit()
-            return redirect(url_for('showCategories', category_id=category_id))
-        else:
-            return render_template('deleteItem.html', 
-                                    item=deleteItem,
-                                    category_id=category_id)
+        return render_template('deleteItem.html', 
+                                item=deleteItem,
+                                category_id=category_id)
 
 # All JSON Functions
 # JSON APIs to view Item Information
