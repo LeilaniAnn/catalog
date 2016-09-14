@@ -62,9 +62,6 @@ def newCategories():
 def editCategories(category_id):
     categories = session.query(Category).order_by(asc(Category.name))
     editCategories = session.query(Category).filter_by(id=category_id).one()
-    if editCategories != login_session['user_id']:
-        flash(u'You are not authorized to edit this category', 'error')
-        return redirect(url_for('showCategories'))
     if request.method == 'POST':
         if request.form['name']:
             editCategories.name = request.form['name']
@@ -82,9 +79,6 @@ def editCategories(category_id):
 def deleteCategories(category_id):
     categories = session.query(Category).order_by(asc(Category.name))
     deleteCategory = session.query(Category).filter_by(id=category_id).one()
-    if deleteCategories != login_session['user_id']:
-        flash(u'You are not authorized to delete this category', 'error')
-        return redirect(url_for('showCategories'))
     if request.method == 'POST':
         session.delete(deleteCategory)
         flash('\"%s\" Successfully Deleted' % deleteCategory.name)
@@ -140,9 +134,6 @@ def editItem(category_id,item_id):
     categories = session.query(Category).order_by(asc(Category.name))
     category = session.query(Category).filter_by(id=category_id).one()
     editItem = session.query(Item).filter_by(id=item_id).one()
-    if editItem != login_session['user_id']:
-        flash(u'You are not authorized to edit this item', 'error')
-        return redirect(url_for('showCategories'))
     if request.method == 'POST':
         if request.form['name']:
             editItem.name = request.form['name']
@@ -167,9 +158,6 @@ def editItem(category_id,item_id):
 @login_required
 def deleteItem(category_id,item_id):
     deleteItem = session.query(Item).filter_by(id=item_id).one()
-    if deleteItem != login_session['user_id']:
-        flash(u'You are not authorized to delete this item', 'error')
-        return redirect(url_for('showCategories'))
     if request.method == 'POST':
         session.delete(deleteItem)
         flash('\"%s\" Successfully Deleted' % deleteItem.name)
