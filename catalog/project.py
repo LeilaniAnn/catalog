@@ -202,8 +202,7 @@ def categoriesJSON():
     return jsonify(categories=[i.serialize for i in categories])
 
 # User Login Functions
-CLIENT_ID = json.loads(
-    open('fb_client_secrets.json', 'r').read())['web']['app_id']
+CLIENT_ID = json.loads(open(r'/var/www/catalog/fb_client_secrets.json', 'r').read())['web']['app_id']
 APPLICATION_NAME = "Item Catalog Application"
 
 @app.route('/login/')
