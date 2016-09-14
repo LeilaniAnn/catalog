@@ -202,7 +202,7 @@ def categoriesJSON():
     return jsonify(categories=[i.serialize for i in categories])
 
 # User Login Functions
-CLIENT_ID = json.loads(open(r'/var/www/catalog/fb_client_secrets.json', 'r').read())['web']['app_id']
+CLIENT_ID = json.loads(open(r'/var/www/catalog/catalog/fb_client_secrets.json', 'r').read())['web']['app_id']
 APPLICATION_NAME = "Item Catalog Application"
 
 @app.route('/login/')
@@ -222,8 +222,8 @@ def fbconnect():
     access_token = request.data
     print "access token received %s " % access_token
 
-    app_id = json.loads(open(r'/var/www/catalog/fb_client_secrets.json', 'r').read())['web']['app_id']
-    app_secret = json.loads(open(r'/var/www/catalog/fb_client_secrets.json', 'r').read())['web']['app_secret']
+    app_id = json.loads(open(r'/var/www/catalog/catalog/fb_client_secrets.json', 'r').read())['web']['app_id']
+    app_secret = json.loads(open(r'/var/www/catalog/catalog/fb_client_secrets.json', 'r').read())['web']['app_secret']
     url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (
         app_id, app_secret, access_token)
     h = httplib2.Http()
