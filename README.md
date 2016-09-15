@@ -2,7 +2,7 @@
 -----------------------------------------------
 
 ----------
-**Download Private Key below**
+**Download Private Key**
 *Move the private key file into the folder ~/.ssh (where ~ is your environment's home directory). So if you downloaded the file to the Downloads folder, just execute the following command in your terminal.*
 
 > mv ~/Downloads/udacity_key.rsa ~/.ssh/
