@@ -1,7 +1,7 @@
 **Instructions for SSH access to the instance**
 -----------------------------------------------
-
-----------
+**Public IP Address:** ```54.68.216.109```
+**AWS URL:** ```http://ec2-54-68-216-109.us-west-2.compute.amazonaws.com/```
 **Download Private Key**
 *Move the private key file into the folder ~/.ssh (where ~ is your environment's home directory). So if you downloaded the file to the Downloads folder, just execute the following command in your terminal.*
 
