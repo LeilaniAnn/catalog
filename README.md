@@ -184,4 +184,4 @@ The sudo command was displaying a warning message unable to resolve host [ip-10-
 AH00494: SIGHUP received.  Attempting to restart : Not a bug - just restarts Apache for the traffic/bandwidth tallys
 AH00491: caught SIGTERM, shutting down: http://stackoverflow.com/questions/1661802/apache-server-keeps-crashing-caught-sigterm-shutting-down
 
-**Help acquired through stackoverflow, FSND Udacity forums, and FSND slack channel as well as https://discussions.udacity.com/t/markedly-underwhelming-and-potentially-wrong-resource-list-for-p5/8587, https://discussions.udacity.com/t/project-5-resources/28343,https://discussions.udacity.com/t/p5-how-i-got-through-it/15342/17**
+**Help acquired through stackoverflow, FSND Udacity forums, and FSND slack channel as well as https://discussions.udacity.com/t/markedly-underwhelming-and-potentially-wrong-resource-list-for-p5/8587, https://discussions.udacity.com/t/project-5-resources/28343, https://discussions.udacity.com/t/p5-how-i-got-through-it/15342/17**
