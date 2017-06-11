@@ -1,2 +1,2 @@
-web: python app.py
+web: python catalog/app.py
 init: python items.py
