@@ -1,1 +1,2 @@
-web: gunicorn --pythonpath app project.wsgi
+web: gunicorn app:app
+init: python db.py

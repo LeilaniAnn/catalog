@@ -38,7 +38,7 @@ cd /vagrant/catalog
 python items.py (to populate database)
 ```
 ``` 
-python project.py
+python app.py
 ```
 
 Go to http://localhost:5000 to see app running
