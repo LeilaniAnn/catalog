@@ -16,7 +16,7 @@ from functools import wraps
 app = Flask(__name__)
 
 # Connect to Database and create database session
-engine = create_engine('leilanixann.mysql.pythonanywhere-services.com')
+engine = create_engine('postgres://yrxpfopslthutl:bc54417c098ea15e644d863a3d7c6ef2c8710d239c472dda5ae1c793eccbdc0d@ec2-50-19-219-69.compute-1.amazonaws.com:5432/d1hnt7dov574q5')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
