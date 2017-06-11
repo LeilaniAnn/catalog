@@ -1,2 +1,2 @@
-web: gunicorn app:app
-init: python db.py
+web: gunicorn app:catalog
+init: python items.py
