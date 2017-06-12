@@ -5,7 +5,7 @@ from db import Base, Category, Item, User
 from flask import session as login_session
 import random
 import string
-
+import os
 import httplib2
 import json
 from flask import make_response
