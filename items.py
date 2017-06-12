@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from db import Base, Category, Item, User
+from db import Base, Category, Item
 
 engine = create_engine('postgres://yrxpfopslthutl:bc54417c098ea15e644d863a3d7c6ef2c8710d239c472dda5ae1c793eccbdc0d@ec2-50-19-219-69.compute-1.amazonaws.com:5432/d1hnt7dov574q5')
 # Bind the engine to the metadata of the Base class so that the
@@ -17,10 +17,6 @@ DBSession = sessionmaker(bind=engine)
 # revert all of them back to the last commit by calling
 # session.rollback()
 session = DBSession()
-User1 = User(name="Leilani Raranga", email="retrosole@gmail.com",
-             picture='http://my.xfinity.com/blogs/tv/files/2010/08/Dora.jpg')
-session.add(User1)
-session.commit()
 
 
 category1 = Category(name="Lipstick")
