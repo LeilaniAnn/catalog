@@ -203,7 +203,7 @@ def categoriesJSON():
 
 # User Login Functions
 CLIENT_ID = json.loads(
-    open('fb_client_secrets.json', 'r').read())['web']['app_id']
+    open('fb_client_secrets.json', 'r').read())['web']['app_id']['app_secret']
 APPLICATION_NAME = "Item Catalog Application"
 
 @app.route('/login/')
