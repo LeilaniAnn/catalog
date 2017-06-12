@@ -22,13 +22,13 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-# def login_required(f):
-#     @wraps(f)
-#     def decorated_function(*args, **kwargs):
-#         if 'username' not in login_session:
-#           return redirect(url_for( 'showLogin' ) )
-#         return f(*args, **kwargs)
-#     return decorated_function
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' not in login_session:
+          return redirect(url_for( 'showLogin' ) )
+        return f(*args, **kwargs)
+    return decorated_function
 
 # Show all categories
 @app.route('/')
@@ -310,27 +310,27 @@ APPLICATION_NAME = "Item Catalog Application"
 #         return redirect(url_for('showCategories'))
 # User Helper Functions
 
-def createUser(login_session):
-    newUser = User(name=login_session['username'], 
-                   email=login_session['email'], 
-                   picture=login_session['picture'])
-    session.add(newUser)
-    session.commit()
-    user = session.query(User).filter_by(email=login_session['email']).one()
-    return user.id
+# def createUser(login_session):
+#     newUser = User(name=login_session['username'], 
+#                    email=login_session['email'], 
+#                    picture=login_session['picture'])
+#     session.add(newUser)
+#     session.commit()
+#     user = session.query(User).filter_by(email=login_session['email']).one()
+#     return user.id
 
 
-def getUserInfo(user_id):
-    user = session.query(User).filter_by(id=user_id).one()
-    return user
+# def getUserInfo(user_id):
+#     user = session.query(User).filter_by(id=user_id).one()
+#     return user
 
 
-def getUserID(email):
-    try:
-        user = session.query(User).filter_by(email=email).one()
-        return user.id
-    except:
-        return None
+# def getUserID(email):
+#     try:
+#         user = session.query(User).filter_by(email=email).one()
+#         return user.id
+#     except:
+#         return None
 
 
 if __name__ == '__main__':
