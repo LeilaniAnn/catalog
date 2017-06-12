@@ -1,5 +1,4 @@
 # [Item Catalog] http://aqueous-depths-80170.herokuapp.com/
-version deployed does not require user login
 
 This is a project for Udacity's Full Stack Nanodegree: Item Catalog Project 
 
@@ -10,11 +9,12 @@ This is a project for Udacity's Full Stack Nanodegree: Item Catalog Project
   <li>Only users may edit/delete/add new items</li>
   <li>JSON Endpoints</li>
 </ol>
+
 | Request | What you get | 
-| ------------- |:-------------:|
-| /catalog/JSON | Get all Categories |
+| ------------- 	|:-------------:|
+| /catalog/JSON |	 Get all Categories |
 | /catalog/*category ID*/items/*item ID*/JSON | Get a single item |
-| /catalog/*category ID*/items/JSON | Get all items that belongs to the given catgeory
+| /catalog/*category ID*/items/JSON | 		Get all items that belongs to the given catgeory
 
 
 
